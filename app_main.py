@@ -1,7 +1,13 @@
+# HARD STORAGE FOR USERNAME
+
+#class DataStore:
+ #   username = ""
+
 from imports import *
 from sql_all_logins import *
 #from theme import *
 from save_cloud_image import *
+from update_train_user_json import *
 
 # Universal functions for full functionality
 
@@ -75,6 +81,7 @@ class login(Screen):
         username = self.username_input.text
         password = self.password_input.text
         response = sql_login(username, password)
+        #DataStore.username = self.username_input.text
 
         # Create and configure the login status popup
         popup_content = BoxLayout(orientation="vertical")
@@ -84,6 +91,7 @@ class login(Screen):
         popup_content.add_widget(popup_label)
 
         if response == "user":
+
             window_name = 'main_page'
         elif response == "admin":
             window_name = 'main_page_admin'
@@ -224,7 +232,36 @@ class main_page_admin(Screen):
         root = BoxLayout(orientation="vertical")
         root.add_widget(Label(text="MAIN PAGE ADMIN"))
 
+        signout_button = Button(text='Sign out')
+        signout_button.bind(on_press=self.sign_out)
+        root.add_widget(signout_button)
+
         self.add_widget(root)
+
+    def sign_out(self, instance):
+
+        # Create and configure the login status popup (case dependant)
+        popup_content = BoxLayout(orientation="vertical")
+
+        popup_yes_button = Button(text="sign out")
+        popup_yes_button.bind(on_press=lambda instance: change_screen(self.manager, 'welcome'))
+        popup_yes_button.bind(on_release=self.close_popup)
+
+        popup_no_button = Button(text="Cancel")
+        popup_no_button.bind(on_press=self.close_popup)
+
+        # Add popup elements to popup main
+        popup_content.add_widget(popup_yes_button)
+        popup_content.add_widget(popup_no_button)
+
+        # Make popup and add it to screen
+        self.popup = Popup(title="Are you sure you want to sign out?", content=popup_content, size_hint=(None, None), size=(400, 200))
+
+        # Open the pop-up
+        self.popup.open()
+
+    def close_popup(self, instance):
+        self.popup.dismiss()
 class train(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -234,7 +271,10 @@ class train(Screen):
         root.add_widget(Label(text="Train"))
 
         # All training option buttons
-        root.add_widget(self.create_button_with_background("regular-collar.png", "Standard Collar"))
+        regularcol_button = self.create_button_with_background("regular-collar.png", "Standard Collar")
+        root.add_widget(regularcol_button)
+        regularcol_button.bind(on_release=lambda instance: change_screen(self.manager, 'regular_collar'))
+
         root.add_widget(self.create_button_with_background("regular-flap.png", "Flap"))
         root.add_widget(self.create_button_with_background("standard-lining.png", "Standard Lining"))
         root.add_widget(self.create_button_with_background("standing-collar.png", "Standing Collar"))
@@ -260,9 +300,24 @@ class train(Screen):
         except FileNotFoundError:
             # case where the image doesn't exist
             button.background_normal = ''  # empty string for no background
-
         return button
+class regular_collar(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
+        root = BoxLayout(orientation="vertical")
+        root.add_widget(Label(text="Training: regular collar"))
+
+        submit_button = Button(text='Submit')
+        root.add_widget(submit_button)
+        #update_user_training(username,part)
+
+        # Return button
+        return_button = Button(text='Cancel')
+        return_button.bind(on_release=lambda instance: change_screen(self.manager, 'train'))
+        root.add_widget(return_button)
+
+        self.add_widget(root)
 class CorporateOffice(MDApp):
 
     def build(self):
@@ -279,6 +334,9 @@ class CorporateOffice(MDApp):
         screen3 = sign_up(name='sign_up')
         screen4 = main_page(name='main_page')
         screen5 = main_page_admin(name='main_page_admin')
+        screen6 = regular_collar(name='regular_collar')
+
+
         #screen5 = qr_scanner(name='qr_scanner')
         #screen6 = work_bench(name='work_bench')
         screen7 = train(name='train')
@@ -291,6 +349,7 @@ class CorporateOffice(MDApp):
         sm.add_widget(screen3)
         sm.add_widget(screen4)
         sm.add_widget(screen5)
+        sm.add_widget(screen6)
 
         sm.add_widget(screen7)
 
