@@ -12,7 +12,7 @@ with open("IBM_images.json",'r') as credentials:
 
 cos_api_key_id = config_data['apikey']
 cos_service_instance_id = config_data['resource_instance_id']
-cos_endpoint = 'https://s3.ams03.cloud-object-storage.appdomain.cloud'
+cos_endpoint = #put endpoint here or have in config file
 
 
 # Initialize COS client
