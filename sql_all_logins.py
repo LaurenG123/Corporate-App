@@ -4,7 +4,7 @@ import bcrypt
 def sql_newlogin(username, password):
     try:
         connection = pyodbc.connect(
-            'DRIVER={SQL Server};SERVER=MSI;DATABASE=CorpPoke'
+            'DRIVER={SQL Server};SERVER=MSI;DATABASE=CorpPoke' #personal to me
         )
         cursor = connection.cursor()
 
@@ -37,7 +37,7 @@ def sql_newlogin(username, password):
 
 def sql_login(username, entered_password):
     try:
-        connection = pyodbc.connect('DRIVER={SQL Server};SERVER=MSI;DATABASE=CorpPoke')
+        connection = pyodbc.connect('DRIVER={SQL Server};SERVER=MSI;DATABASE=CorpPoke') #personal to me
         cursor = connection.cursor()
 
         # Check if the user is in the 'users' table
