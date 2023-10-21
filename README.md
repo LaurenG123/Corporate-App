@@ -14,3 +14,5 @@ This does not represent a finished product and is meant to act as a test applica
 - Usage: IBM cloud used uniquely for image storage, IBM cloudnat used for JSON files in pertitioned document format
 - images displyed on app are downloaded first from cloud if they do not already exist locally when login is successful. They are used as button backgrounds
 - JSON file is updated when user training for specific part is complete so that competencies are recorded and saved permanently.
+
+To use configure credential files locally. for test purposes local json file was used but this will later be upgraded to config file with proper download/update potential.
